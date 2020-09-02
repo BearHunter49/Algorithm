@@ -47,7 +47,7 @@ for i in range(1, N + 1):
         print(shortest_distance[i])
 
 # O(ElogV)
-# 모든 간선을 힙에 넣었다 빼는 경우 O(ElogE)
+# 모든 간선을 힙에 넣었다 빼는 경우 O(E * logE)
 # 하지만 간선의 개수는 최대 V^2개 가능
 # 따라서 O(ElogV)
 

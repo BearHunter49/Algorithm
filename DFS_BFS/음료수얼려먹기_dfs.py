@@ -10,7 +10,7 @@ count = 0
 def dfs(x, y):
     # break 조건
     if x < 0 or x >= N or y < 0 or y >= M:
-        return
+        return False
 
     # DFS
     if frame[x][y] == 0:
@@ -28,3 +28,5 @@ for x in range(N):
             count += 1
 
 print(count)
+
+# DFS 나 BFS 나 O(N) - 탐색이니까
