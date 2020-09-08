@@ -8,7 +8,7 @@ for i in range(N):
     now_ball = balls[i]
 
     for j in range(i + 1, N):
-        if balls[j] != now_ball:  # 같은 무게면
+        if balls[j] != now_ball:  # 다른 무게면
             result += (N - j)  # 그 뒤는 다 가능한 조합임
             break
 
