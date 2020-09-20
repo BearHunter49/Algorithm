@@ -30,7 +30,7 @@ while start <= end:
         end = mid - 1  # 거리 좀 더 줄여보기
 
 print(result)
-
+# 사이의 거리로 이진탐색
 
 
 
