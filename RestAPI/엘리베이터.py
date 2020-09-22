@@ -34,7 +34,7 @@ def make_command(id, command, call_ids=None):
         }
 
 
-def is_direction_need(direction, e):
+def should_keep_going(direction, e):
     now = e['floor']
 
     # 위로 가던 중
@@ -140,36 +140,60 @@ def what_should_do(e, checked_call):
         if e['reservations'] or e['pushed']:  # 명령이 남아있음
 
             if now_direction == 'UP':  # 위로 가던 중
-                if is_direction_need('UP', e):  # 더 가야함
+                if should_keep_going('UP', e):  # 더 가야함
                     return 'UP', None
                 else:  # 위로 갈 사람 없음
                     e['direction'] = 'DOWN'
                     return 'DOWN', None
 
             if now_direction == 'DOWN':  # 아래로 가던 중
-                if is_direction_need('DOWN', e):  # 더 가야함
+                if should_keep_going('DOWN', e):  # 더 가야함
                     return 'DOWN', None
                 else:  # 아래로 갈 사람 없음
                     e['direction'] = 'UP'
                     return 'UP', None
 
             if now_direction == 'IDLE':  # 멈춰있던 중(새로 사람들이 탄 경우임)
-                need_up = 0
-                need_down = 0
-                for id, floor in e['reservations']:
-                    diff = now - floor  # 0인 경우 없음(위에서 걸러짐)
-                    # 다수결 투표
-                    if diff < 0:
-                        need_up += 1
-                    else:
-                        need_down += 1
 
-                if need_up > need_down:  # 위로 가야함
-                    e['direction'] = 'UP'
-                    return 'UP', None
-                else:  # 아래로 가야함
-                    e['direction'] = 'DOWN'
-                    return 'DOWN', None
+                # 안에 탄 사람 우선권
+                if e['pushed']:
+                    need_up = 0
+                    need_down = 0
+                    for id, floor in e['pushed']:
+                        diff = now - floor  # 0인 경우 없음(위에서 걸러짐)
+                        # 다수결 투표
+                        if diff < 0:
+                            need_up += 1
+                        else:
+                            need_down += 1
+
+                        if need_up > need_down:  # 위로 가야함
+                            e['direction'] = 'UP'
+                            return 'UP', None
+
+                        else:  # 아래로 가야함
+                            e['direction'] = 'DOWN'
+                            return 'DOWN', None
+
+                # 예약이 있을 경우
+                else:
+                    need_up = 0
+                    need_down = 0
+                    for id, floor in e['reservations']:
+                        diff = now - floor  # 0인 경우 없음(위에서 걸러짐)
+                        # 다수결 투표
+                        if diff < 0:
+                            need_up += 1
+                        else:
+                            need_down += 1
+
+                    if need_up > need_down:  # 위로 가야함
+                        e['direction'] = 'UP'
+                        return 'UP', None
+
+                    else:  # 아래로 가야함
+                        e['direction'] = 'DOWN'
+                        return 'DOWN', None
 
     # 이동 중
     if now_status == 'UPWARD':  # 계속 가면 됨
@@ -227,7 +251,7 @@ def update_elevator(elevator, api_elevator, elevator_num):
 
 def apeach_0():
     user_key = 'tester'
-    elevator_num = 1
+    elevator_num = 4
 
     start_res = start(user_key, 2, elevator_num)
     token = start_res['token']
@@ -250,16 +274,15 @@ def apeach_0():
 
     checked_call = list()  # 처리된 손님 id
     checked_end = dict()  # key: call_id, value: end
+    t = 0
     while not is_end:  # 완료할 때까지 1가지 timestamp
         calls_res = on_calls(token)  # 상태 불러오기
         print("-------------------------------")
         for ca in calls_res['calls']:
             print(ca['start'], end=', ')
         print()
-        for ev in calls_res['elevators']:
-            print(f'{ev["id"]}, {ev["floor"]}, {ev["status"]}, {len(ev["passengers"])}')
-        # print(calls_res['calls'])
 
+        # print(calls_res['calls'])
 
         # 엘레베이터가 각자 태울 손님 선택
         for call in calls_res['calls']:
@@ -289,7 +312,12 @@ def apeach_0():
         is_end = action_res['is_end']  # 결과 확인
 
         update_elevator(elevator, action_res['elevators'], elevator_num)  # 엘리베이터 dict 업데이트
-        # time.sleep(0.05)
+        time.sleep(0.01)
+        for id, ev in elevator.items():
+            print(f'{id}, {ev["floor"]}, {ev["status"]}, {len(ev["passengers"])}, {ev["direction"]}')
+
+        t += 1
+        print(t)
 
 
 if __name__ == '__main__':
