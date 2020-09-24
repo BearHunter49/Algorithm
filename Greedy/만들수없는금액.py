@@ -16,6 +16,6 @@ for i in range(1, sum(coin_list)):
 
 print(result)
 
-
+# 효율성이 떨어짐
 
 

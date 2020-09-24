@@ -33,14 +33,7 @@ def solution(food_times, k):
 
     return answer
 
-
-user_input = input()
-user_input = user_input.replace(' ', '').replace('[', '').replace(']', '')
-input_list = user_input.split(',')
-food_items = list(map(int, input_list[:-1]))
-k = int(input_list[-1])
-
-print(solution(food_items, k))
+print(solution([3, 1, 1, 2], 5))
 
 
 
