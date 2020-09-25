@@ -153,7 +153,7 @@ def what_should_do(e, checked_call):
                     e['direction'] = 'UP'
                     return 'UP', None
 
-            if now_direction == 'IDLE':  # 멈춰있던 중(새로 사람들이 탄 경우임)
+            if now_direction == 'IDLE':  # 멈춰있던 중(새로 사람들이 탄 경우, 새로 예약이 생긴 경우)
 
                 # 안에 탄 사람 우선권
                 if e['pushed']:

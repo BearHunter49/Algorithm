@@ -123,15 +123,5 @@ def solution(words, queries):
 
     return answer
 
+
 print(solution(["frodo", "front", "frost", "frozen", "frame", "kakao"], ["fro??", "????o", "fr???", "fro???", "pro?", "?????"]))
-
-
-
-
-
-
-
-
-
-
-

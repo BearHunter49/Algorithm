@@ -51,7 +51,7 @@ def check(arr, lock_len):
 def rotate_90(arr):
     row_len = len(arr)
     column_len = len(arr[0])
-    arr2 = [[0] * row_len for _ in range(column_len)]  # 행 열 뒤집음
+    arr2 = [[0] * row_len for _ in range(column_len)]  # 행 열 뒤집음 (정사각형 아닐때만)
 
     # 회전
     for i in range(row_len):
