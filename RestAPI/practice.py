@@ -8,11 +8,11 @@ import json
 #     "hobby": ["football", "programming"]
 # }
 #
-# # dump 는 파일로 쓰는 것, dumps 는 문자열로 변환
+# # dump 는 파일로 쓰는 것, dumps 는 json 문자열로 변환
 # json_data = json.dumps(user, indent=4)
 # print(json_data)
 
-# load 도 파일을 읽는 것, loads 는 문자열을 dictionary 로
+# load 도 파일을 읽는 것, loads 는 json 문자열을 dictionary 로
 # print()
 # data = json.loads(json_data)
 # print(type(data))
