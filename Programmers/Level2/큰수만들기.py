@@ -1,6 +1,3 @@
-import copy
-
-
 def solution(number, k):
     answer = ''
 
@@ -38,4 +35,4 @@ def solution(number, k):
 
 
 print(solution("4177252841", 4))
-
+# 시간초과
